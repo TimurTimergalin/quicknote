@@ -1,37 +1,39 @@
-from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy.orm import Mapped, DeclarativeBase, mapped_column, relationship
-
 from datetime import datetime
+
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, DeclarativeBase, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
     pass
 
 
-notes_to_tags = Table(
-    "notes_to_tags",
-    Base.metadata,
-    Column("note_id", ForeignKey("notes.id")),
-    Column("tag", ForeignKey("tags.name"))
-)
+class NotesToTags(Base):
+    __tablename__ = "notes_to_tags"
+    note_id: Mapped[int] = mapped_column(ForeignKey("notes.id"), primary_key=True)
+    tag_name: Mapped[str] = mapped_column(ForeignKey("tags.name"), primary_key=True)
+
+    note: Mapped["Note"] = relationship(back_populates="tags")
+    tag: Mapped["Tag"] = relationship(back_populates="notes")
 
 
-class Note:
+class Note(Base):
     __tablename__ = "notes"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
     text: Mapped[str]
     created: Mapped[datetime] = mapped_column(index=True)
-    tags: Mapped[list["Tag"]] = relationship(secondary=notes_to_tags)
+    tags: Mapped[list["NotesToTags"]] = relationship(back_populates="note")
 
 
-class Tag:
+class Tag(Base):
     __tablename__ = "tags"
     name: Mapped[str] = mapped_column(primary_key=True, index=True)
-    notes: Mapped[list["Note"]] = relationship(secondary=notes_to_tags)
+    notes: Mapped[list["NotesToTags"]] = relationship(back_populates="tag")
 
 
 __all__ = [
     "Base",
     "Note",
-    "Tag"
+    "Tag",
+    "NotesToTags"
 ]
