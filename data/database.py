@@ -4,9 +4,9 @@ from .models import Base
 
 
 class DataBase:
-    def __init__(self, path):
+    def __init__(self, path: str) -> None:
         self.engine = create_engine(path)
         Base.metadata.create_all(self.engine)
 
-    def session(self):
+    def session(self) -> Session:
         return Session(self.engine)

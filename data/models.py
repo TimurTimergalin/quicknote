@@ -20,7 +20,7 @@ class Note:
     __tablename__ = "notes"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
     text: Mapped[str]
-    created: Mapped[datetime]
+    created: Mapped[datetime] = mapped_column(index=True)
     tags: Mapped[list["Tag"]] = relationship(secondary=notes_to_tags)
 
 
