@@ -35,6 +35,8 @@ class Create(Command):
             session.add(note)
             session.commit()
 
+        print("Note saved")
+
 
 
 
