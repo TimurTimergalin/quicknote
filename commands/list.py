@@ -8,6 +8,7 @@ from .abc import Command
 
 def format_note(note: Note):
     return (
+        f"{note.id}.\n" +
         note.created.strftime("Created at %d-%m-%Y %H:%M") + "\n" +
         " ".join(f"[{x.tag_name}]" for x in note.tags) + "\n" +
         note.text
