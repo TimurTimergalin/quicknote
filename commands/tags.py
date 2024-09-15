@@ -5,7 +5,7 @@ from sqlalchemy import select
 
 
 class Tags(Command):
-    def __init__(self, db: DataBase):
+    def __init__(self, db: DataBase) -> None:
         self.db = db
 
     def execute(self) -> None:

@@ -6,7 +6,7 @@ from data import DataBase, Note, NoteToTag
 from .abc import Command
 
 
-def format_note(note: Note):
+def format_note(note: Note) -> str:
     return (
         f"{note.id}.\n" +
         note.created.strftime("Created at %d-%m-%Y %H:%M") + "\n" +
@@ -17,7 +17,7 @@ def format_note(note: Note):
 
 class List(Command):
     def __init__(self, db: DataBase, tags: list[str] | None = None, since: datetime | None = None,
-                 until: datetime | None = None):
+                 until: datetime | None = None) -> None:
         self.until = until
         self.since = since
         self.tags = tags
